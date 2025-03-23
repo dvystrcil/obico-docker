@@ -38,9 +38,10 @@ jobs:
         run: |
           mv frontend backend/
           ls -la backend/
+          echo 'RUN ls -la /app' >> backend/Dockerfile
           echo 'RUN mkdir /frontend' >> backend/Dockerfile
-          echo 'COPY /app/frontend/* /frontend/' >> backend/Dockerfile
-          echo 'RUN rm -rf /app/frontend' >> backend/Dockerfile
+          echo 'RUN ln -s /app/frontend/* /frontend/' >> backend/Dockerfile
+          echo 'RUN ls -la /app/frontend' >> backend/Dockerfile
           cat backend/Dockerfile
       - id: short-sha
         name: Get short sha
