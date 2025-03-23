@@ -38,6 +38,7 @@ jobs:
         run: |
           mv frontend backend/
           ls -la backend/
+          echo 'django-ajax-datatable==4.5.0' >> backend/requirements.txt
           echo 'RUN ls -la /app' >> backend/Dockerfile
           echo 'RUN mkdir /frontend' >> backend/Dockerfile
           echo 'RUN ln -s /app/frontend/* /frontend/' >> backend/Dockerfile
