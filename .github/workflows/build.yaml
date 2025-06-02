@@ -45,7 +45,7 @@ jobs:
       - name: Update compose file
         run: |
           rm -f obico/docker-compose.yaml
-          copy -r obico/* .
+          cp -r obico/* .
           mv my-docker-compose.yaml docker-compose.yaml        
 #       - name: Docker meta
 #         id: meta
