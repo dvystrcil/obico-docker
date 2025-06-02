@@ -39,6 +39,20 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ github.token }}
+      - name: Update compose file
+        run: |
+          rm -f docker-compose.yaml
+          mv my-docker-compose.yaml docker-compose.yaml        
+#       - name: Docker meta
+#         id: meta
+#         uses: docker/metadata-action@v5
+#         with:
+#           images: |
+#             ghcr.io/dvystrcil/obico/web
+#           tags: |
+#             type=raw,priority=1000,value=latest
+#             type=raw,value=${{ env.OBICO_BRANCH }}
+#             type=raw,value=sha-${{ steps.short-sha.outputs.SHA }}
       - name: publish
         uses: 0x4r45h/docker-compose-ci@v0.1.1
         with:
