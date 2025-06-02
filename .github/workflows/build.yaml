@@ -47,6 +47,7 @@ jobs:
           rm -f obico/docker-compose.yaml
           cp -r obico/* .
           mv my-docker-compose.yaml docker-compose.yaml        
+          cat docker-compose.yaml
 #       - name: Docker meta
 #         id: meta
 #         uses: docker/metadata-action@v5
