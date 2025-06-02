@@ -35,6 +35,7 @@ jobs:
         with:
           repository: ${{ env.OBICO_REPO }}
           ref: ${{ env.OBICO_BRANCH }}
+          path: './obico'
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
         with:
@@ -43,7 +44,8 @@ jobs:
           password: ${{ github.token }}
       - name: Update compose file
         run: |
-          rm -f docker-compose.yaml
+          rm -f obico/docker-compose.yaml
+          copy -r obico/* .
           mv my-docker-compose.yaml docker-compose.yaml        
 #       - name: Docker meta
 #         id: meta
