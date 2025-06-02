@@ -22,8 +22,7 @@ env:
   OBICO_BRANCH: ${{ inputs.branch }} 
 
 jobs:
-  build-backend:
-    name: Build Backend
+  build-images:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -34,98 +33,122 @@ jobs:
         with:
           repository: ${{ env.OBICO_REPO }}
           ref: ${{ env.OBICO_BRANCH }}
-      - name: Add frontend
-        run: |
-          mv frontend backend/
-          ls -la backend/
-          echo 'django-ajax-datatable==4.5.0' >> backend/requirements.txt
-          echo 'RUN ls -la /app' >> backend/Dockerfile
-          echo 'RUN mkdir /frontend' >> backend/Dockerfile
-          echo 'RUN ln -s /app/frontend/* /frontend/' >> backend/Dockerfile
-          echo 'RUN ls -la /app/frontend' >> backend/Dockerfile
-          cat backend/Dockerfile
-      - id: short-sha
-        name: Get short sha
-        run: echo "SHA=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
-      - name: Docker meta
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: |
-            ghcr.io/dvystrcil/obico/web
-          tags: |
-            type=raw,priority=1000,value=latest
-            type=raw,value=${{ env.OBICO_BRANCH }}
-            type=raw,value=sha-${{ steps.short-sha.outputs.SHA }}
-      # - name: Set up QEMU
-      #   uses: docker/setup-qemu-action@v3
-      #   with:
-      #     platforms: arm64
-      - name: Set up Buildx
-        uses: docker/setup-buildx-action@v3
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ github.token }}
-      - name: Build and Push
-        uses: docker/build-push-action@v5
+      - name: publish
+        uses: 0x4r45h/docker-compose-ci@v0.1.1
         with:
-          context: backend
-          pull: true
-          push: ${{ github.ref == 'refs/heads/main' }}
-          platforms: linux/amd64
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          services: "ml_api web tasks"
 
-  build-ml-api:
-    name: Build ML API
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          repository: ${{ env.OBICO_REPO }}
-          ref: ${{ env.OBICO_BRANCH }}
-      - id: short-sha
-        name: Get short sha
-        run: echo "SHA=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
-      - name: Docker meta
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: |
-            ghcr.io/dvystrcil/obico/ml-api
-          tags: |
-            type=raw,priority=1000,value=latest
-            type=raw,value=${{ env.OBICO_BRANCH }}
-            type=raw,value=sha-${{ steps.short-sha.outputs.SHA }}
-      # - name: Set up QEMU
-      #   uses: docker/setup-qemu-action@v3
-      #   with:
-      #     platforms: arm64
-      - name: Set up Buildx
-        uses: docker/setup-buildx-action@v3
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ github.token }}
-      - name: Build and Push
-        uses: docker/build-push-action@v5
-        with:
-          context: ml_api
-          pull: true
-          push: ${{ github.ref == 'refs/heads/main' }}
-          platforms: linux/amd64
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+# jobs:
+#   build-backend:
+#     name: Build Backend
+#     runs-on: ubuntu-latest
+#     permissions:
+#       contents: read
+#       packages: write
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v4
+#         with:
+#           repository: ${{ env.OBICO_REPO }}
+#           ref: ${{ env.OBICO_BRANCH }}
+#       - name: Add frontend
+#         run: |
+#           mv frontend backend/
+#           ls -la backend/
+#           echo 'django-ajax-datatable==4.5.0' >> backend/requirements.txt
+#           echo 'RUN ls -la /app' >> backend/Dockerfile
+#           echo 'RUN mkdir /frontend' >> backend/Dockerfile
+#           echo 'RUN ln -s /app/frontend/* /frontend/' >> backend/Dockerfile
+#           echo 'RUN ls -la /app/frontend' >> backend/Dockerfile
+#           cat backend/Dockerfile
+#       - id: short-sha
+#         name: Get short sha
+#         run: echo "SHA=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+#       - name: Docker meta
+#         id: meta
+#         uses: docker/metadata-action@v5
+#         with:
+#           images: |
+#             ghcr.io/dvystrcil/obico/web
+#           tags: |
+#             type=raw,priority=1000,value=latest
+#             type=raw,value=${{ env.OBICO_BRANCH }}
+#             type=raw,value=sha-${{ steps.short-sha.outputs.SHA }}
+#       # - name: Set up QEMU
+#       #   uses: docker/setup-qemu-action@v3
+#       #   with:
+#       #     platforms: arm64
+#       - name: Set up Buildx
+#         uses: docker/setup-buildx-action@v3
+#       - name: Login to GitHub Container Registry
+#         uses: docker/login-action@v3
+#         with:
+#           registry: ghcr.io
+#           username: ${{ github.actor }}
+#           password: ${{ github.token }}
+#       - name: Build and Push
+#         uses: docker/build-push-action@v5
+#         with:
+#           context: backend
+#           pull: true
+#           push: ${{ github.ref == 'refs/heads/main' }}
+#           platforms: linux/amd64
+#           tags: ${{ steps.meta.outputs.tags }}
+#           labels: ${{ steps.meta.outputs.labels }}
+#           cache-from: type=gha
+#           cache-to: type=gha,mode=max
+
+#   build-ml-api:
+#     name: Build ML API
+#     runs-on: ubuntu-latest
+#     permissions:
+#       contents: read
+#       packages: write
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v4
+#         with:
+#           repository: ${{ env.OBICO_REPO }}
+#           ref: ${{ env.OBICO_BRANCH }}
+#       - id: short-sha
+#         name: Get short sha
+#         run: echo "SHA=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+#       - name: Docker meta
+#         id: meta
+#         uses: docker/metadata-action@v5
+#         with:
+#           images: |
+#             ghcr.io/dvystrcil/obico/ml-api
+#           tags: |
+#             type=raw,priority=1000,value=latest
+#             type=raw,value=${{ env.OBICO_BRANCH }}
+#             type=raw,value=sha-${{ steps.short-sha.outputs.SHA }}
+#       # - name: Set up QEMU
+#       #   uses: docker/setup-qemu-action@v3
+#       #   with:
+#       #     platforms: arm64
+#       - name: Set up Buildx
+#         uses: docker/setup-buildx-action@v3
+#       - name: Login to GitHub Container Registry
+#         uses: docker/login-action@v3
+#         with:
+#           registry: ghcr.io
+#           username: ${{ github.actor }}
+#           password: ${{ github.token }}
+#       - name: Build and Push
+#         uses: docker/build-push-action@v5
+#         with:
+#           context: ml_api
+#           pull: true
+#           push: ${{ github.ref == 'refs/heads/main' }}
+#           platforms: linux/amd64
+#           tags: ${{ steps.meta.outputs.tags }}
+#           labels: ${{ steps.meta.outputs.labels }}
+#           cache-from: type=gha
+#           cache-to: type=gha,mode=max
