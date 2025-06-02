@@ -47,11 +47,14 @@ jobs:
           password: ${{ github.token }}
       - name: Update compose file
         run: |
-          rm -f obico/docker-compose.yaml
           cp -r obico/* .
-          mv my-docker-compose.yaml docker-compose.yaml        
-          cat docker-compose.yaml
-#       - name: Docker meta
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Build and push
+        uses: docker/bake-action@v6
+        with:
+          push: true
+#        - name: Docker meta
 #         id: meta
 #         uses: docker/metadata-action@v5
 #         with:
@@ -61,10 +64,10 @@ jobs:
 #             type=raw,priority=1000,value=latest
 #             type=raw,value=${{ env.OBICO_BRANCH }}
 #             type=raw,value=sha-${{ steps.short-sha.outputs.SHA }}
-      - name: publish
-        uses: 0x4r45h/docker-compose-ci@v0.1.1
-        with:
-          services: "ml_api web tasks"
+      # - name: publish
+      #   uses: 0x4r45h/docker-compose-ci@v0.1.1
+      #   with:
+      #     services: "ml_api web tasks"
 
 # jobs:
 #   build-backend:
