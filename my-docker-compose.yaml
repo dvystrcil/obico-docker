@@ -47,7 +47,7 @@ services:
   ml_api:
     hostname: ml_api
     restart: unless-stopped
-    image: ghcr.io/dvystrcil/obico/ml_api:latest
+    image: ghcr.io/dvystrcil/obico/ml_api:${IMAGE_TAG}
     build:
       context: ml_api
     environment:
@@ -66,7 +66,7 @@ services:
   web:
     <<: *web-defaults
     hostname: web
-    image: ghcr.io/dvystrcil/obico/web:latest
+    image: ghcr.io/dvystrcil/obico/web:${IMAGE_TAG}
     ports:
       - "3334:3334"
     depends_on:
@@ -82,7 +82,7 @@ services:
   tasks:
     <<: *web-defaults
     hostname: tasks
-    image: ghcr.io/dvystrcil/obico/tasks:latest
+    image: ghcr.io/dvystrcil/obico/tasks:${IMAGE_TAG}
     command: sh -c "celery -A config worker --beat -l info -c 2 -Q realtime,celery"
     healthcheck:
       test: ["CMD-SHELL", "celery -A config inspect ping"]
