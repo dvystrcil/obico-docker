@@ -54,6 +54,7 @@ jobs:
       - name: Build and push
         uses: docker/bake-action@v6
         with:
+          files: "bake.hcl, docker-compose.yaml"
           push: true
 #        - name: Docker meta
 #         id: meta
