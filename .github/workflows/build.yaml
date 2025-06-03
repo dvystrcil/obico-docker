@@ -50,8 +50,7 @@ jobs:
           cp -r obico/* .
           mv frontend backend/
           ls backend
-          echo 'RUN mkdir /frontend' >> backend/Dockerfile
-          echo 'RUN mv /app/frontend /frontend/' >> backend/Dockerfile
+          echo 'RUN mv /app/frontend /frontend' >> backend/Dockerfile
           echo 'RUN ls -la /frontend' >> backend/Dockerfile
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
