@@ -4,21 +4,28 @@ on:
   push: {}
   workflow_dispatch: 
     inputs:
+      repo:
+        description: 'Repository to build from'
+        default: 'TheSpaghettiDetective/obico-server'
+        type: choice
+        options:
+          - 'TheSpaghettiDetective/obico-server'
+          - 'dvystrcil/obico-server'
       branch:
         description: 'Obico Branch'
-        default: 'pre-release'
+        default: 'release'
         type: choice
         options:
           - release
           - pre-release
           - master
-      ref:
-        description: 'Obico Commit'
-        default: 'HEAD'
-        required: true      
+      # ref:
+      #   description: 'Obico Commit'
+      #   default: 'HEAD'
+      #   required: true      
           
 env:
-  OBICO_REPO: TheSpaghettiDetective/obico-server
+  OBICO_REPO: ${{ inputs.repo }} 
   OBICO_BRANCH: ${{ inputs.branch }} 
 
 jobs:
