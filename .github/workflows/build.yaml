@@ -36,9 +36,9 @@ jobs:
       packages: write
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Checkout Obico
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           repository: ${{ env.OBICO_REPO }}
           ref: ${{ env.OBICO_BRANCH }}
@@ -90,7 +90,7 @@ jobs:
 #       packages: write
 #     steps:
 #       - name: Checkout
-#         uses: actions/checkout@v4
+#         uses: actions/checkout@v6
 #         with:
 #           repository: ${{ env.OBICO_REPO }}
 #           ref: ${{ env.OBICO_BRANCH }}
@@ -149,7 +149,7 @@ jobs:
 #       packages: write
 #     steps:
 #       - name: Checkout
-#         uses: actions/checkout@v4
+#         uses: actions/checkout@v6
 #         with:
 #           repository: ${{ env.OBICO_REPO }}
 #           ref: ${{ env.OBICO_BRANCH }}
