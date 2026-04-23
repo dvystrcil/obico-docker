@@ -30,7 +30,7 @@ env:
 
 jobs:
   build-images:
-    runs-on: ubuntu-latest
+    runs-on: obico-docker-runner
     permissions:
       contents: read
       packages: write
@@ -84,7 +84,7 @@ jobs:
 # jobs:
 #   build-backend:
 #     name: Build Backend
-#     runs-on: ubuntu-latest
+#     runs-on: obico-docker-runner
 #     permissions:
 #       contents: read
 #       packages: write
@@ -143,7 +143,7 @@ jobs:
 
 #   build-ml-api:
 #     name: Build ML API
-#     runs-on: ubuntu-latest
+#     runs-on: obico-docker-runner
 #     permissions:
 #       contents: read
 #       packages: write
