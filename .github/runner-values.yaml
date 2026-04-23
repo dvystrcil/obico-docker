@@ -7,7 +7,7 @@ podTemplate:
     volumes:
       - name: docker-cache
         persistentVolumeClaim:
-          claimName: obico-docker-runner-cache
+          claimName: obico-docker-arc-runner-cache
     containers:
       - name: dind
         volumeMounts:
