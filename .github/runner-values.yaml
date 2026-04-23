@@ -1,0 +1,4 @@
+githubConfigUrl: "https://github.com/dvystrcil/obico-docker" 
+runnerScaleSetName: "obico-docker-runner"
+minRunners: 0
+maxRunners: 3
