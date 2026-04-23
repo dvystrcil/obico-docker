@@ -56,7 +56,6 @@ jobs:
         run: |
           cp -r obico/* .
           mv frontend backend/
-          cat backend/app/jusprin/urls.py
           echo 'RUN mv /app/frontend /frontend' >> backend/Dockerfile
           echo 'RUN ls -la /frontend' >> backend/Dockerfile
       - name: Set up Docker Buildx
