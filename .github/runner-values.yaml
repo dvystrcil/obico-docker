@@ -2,14 +2,4 @@ githubConfigUrl: "https://github.com/dvystrcil/obico-docker"
 runnerScaleSetName: "obico-docker-runner"
 minRunners: 0
 maxRunners: 3
-podTemplate:
-  spec:
-    volumes:
-      - name: docker-cache
-        persistentVolumeClaim:
-          claimName: obico-docker-arc-runner-cache
-    containers:
-      - name: dind
-        volumeMounts:
-          - name: docker-cache
-            mountPath: /mnt/docker-cache
+
