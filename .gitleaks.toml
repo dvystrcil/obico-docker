@@ -1,0 +1,5 @@
+# Vendored: inherit gitleaks v8.30.1 default rule set. Includes the
+# kubernetes-secret-yaml rule that catches the homelab antipattern.
+# Future homelab-specific rules go below the [extend] block.
+[extend]
+useDefault = true
